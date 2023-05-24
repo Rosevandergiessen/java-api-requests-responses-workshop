@@ -1,6 +1,8 @@
 package com.booleanuk.api;
 
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -15,16 +17,19 @@ public class AuthorsController {
     }
 
     @GetMapping
-    public ArrayList<Author> getAll() {
-        return this.authors;
+    public ResponseEntity<ArrayList<Author>> getAll() {
+        if (this.authors.size() > 0){
+            return new ResponseEntity<>(this.authors, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/{id}")
-    public Author getOne(@PathVariable(name = "id") int id) {
+    public ResponseEntity<Author> getOne(@PathVariable(name = "id") int id) {
         if (id < this.authors.size()) {
-            return this.authors.get(id);
+            return new ResponseEntity<>(this.authors.get(id), HttpStatus.OK);
         }
-        return null;
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
     @PostMapping
@@ -47,11 +52,11 @@ public class AuthorsController {
     }
 
     @DeleteMapping("/{id}")
-    public Author delete(@PathVariable (name = "id") int id) {
+    public ResponseEntity<Author> delete(@PathVariable (name = "id") int id) {
         if (id < this.authors.size()) {
-            return this.authors.remove(id);
+            return new ResponseEntity<>(this.authors.remove(id), HttpStatus.OK);
         }
-        return null;
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
 }

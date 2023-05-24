@@ -1,6 +1,7 @@
 package com.booleanuk.api;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -15,16 +16,19 @@ public class PublishersController {
     }
 
     @GetMapping
-    public ArrayList<Publisher> getAll() {
-        return this.publishers;
+    public ResponseEntity<ArrayList<Publisher>> getAll() {
+        if (this.publishers.size() > 0){
+            return new ResponseEntity<>(this.publishers, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(null, HttpStatus.NO_CONTENT);
     }
 
     @GetMapping("/{id}")
-    public Publisher getOne(@PathVariable(name = "id") int id) {
+    public ResponseEntity<Publisher> getOne(@PathVariable(name = "id") int id) {
         if (id < this.publishers.size()) {
-            return this.publishers.get(id);
+            return new ResponseEntity<>(this.publishers.get(id), HttpStatus.OK);
         }
-        return null;
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
     @PostMapping
@@ -47,11 +51,10 @@ public class PublishersController {
     }
 
     @DeleteMapping("/{id}")
-    public Publisher delete(@PathVariable (name = "id") int id) {
+    public ResponseEntity<Publisher> delete(@PathVariable (name = "id") int id) {
         if (id < this.publishers.size()) {
-            return this.publishers.remove(id);
+            return new ResponseEntity<>(this.publishers.remove(id), HttpStatus.OK);
         }
-        return null;
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
-
 }
