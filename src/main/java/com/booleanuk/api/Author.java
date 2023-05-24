@@ -1,8 +1,10 @@
 package com.booleanuk.api;
 
 public class Author {
+    private int id;
     private String name;
     private String email;
+
 
     public Author(String name, String email) {
         this.name = name;
@@ -23,5 +25,13 @@ public class Author {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
