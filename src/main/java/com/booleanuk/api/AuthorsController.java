@@ -41,14 +41,13 @@ public class AuthorsController {
     }
 
     @PutMapping("/{id}")
-    @ResponseStatus(HttpStatus.CREATED)
-    public Author update(@PathVariable (name = "id") int id, @RequestBody Author author) {
+    public ResponseEntity<Author> update(@PathVariable (name = "id") int id, @RequestBody Author author) {
         if (id < this.authors.size()) {
             this.authors.get(id).setName(author.getName());
             this.authors.get(id).setEmail(author.getEmail());
-            return this.authors.get(id);
+            return new ResponseEntity<>(this.authors.get(id), HttpStatus.CREATED) ;
         }
-        return null;
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping("/{id}")
